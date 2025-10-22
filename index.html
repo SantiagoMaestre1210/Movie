@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herramienta Digital - Mi Pelicula Mental</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="stars-canvas"></canvas>
+    <div id="particles-container"></div>
+
+    <nav class="cosmic-nav">
+        <div class="nav-header">
+            <div class="nav-brand">
+                <div class="brand-icon-container">
+                    <span class="star-icon">✨</span>
+                    <div class="icon-glow"></div>
+                </div>
+                <div class="brand-text">
+                    <h1>LifeMovie</h1>
+                    <p class="brand-tagline">Crea, piensa, imagina tu futuro y dinos tu presente</p>
+                </div>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="theme-toggle" onclick="app.toggleTheme()" title="Cambiar tema">
+                    <span class="theme-icon sun">☀️</span>
+                    <span class="theme-icon moon">🌙</span>
+                </button>
+            </div>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn active" data-section="home">🏠 Inicio</button>
+            <button class="nav-btn" data-section="mental-movie">🎬 Película Mental</button>
+            <button class="nav-btn" data-section="chatbot">🤖 Chatbot</button>
+            <button class="nav-btn" data-section="diary">📔 Diario</button>
+            <button class="nav-btn" data-section="vision-board">🎨 Visión</button>
+            <button class="nav-btn" data-section="habits">📊 Hábitos</button>
+            <button class="nav-btn" data-section="wheel">🎯 Rueda</button>
+            <button class="nav-btn" data-section="meditation">🧘 Meditación</button>
+            <button class="nav-btn" data-section="achievements">🏆 Logros</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="home" class="section active">
+            <div class="hero">
+                <h2 class="glowing-text">Bienvenido a tu Mundo Personal</h2>
+                <p class="subtitle">Crea, visualiza y alcanza tus sueños nosotros te ayudamos a que lo hagas.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-number" id="stat-goals">0</div>
+                        <div class="stat-label">Metas Creadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📝</div>
+                        <div class="stat-number" id="stat-entries">0</div>
+                        <div class="stat-label">Entradas de Diario</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-number" id="stat-streak">0</div>
+                        <div class="stat-label">Racha de Días</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-number" id="stat-achievements">0</div>
+                        <div class="stat-label">Logros Desbloqueados</div>
+                    </div>
+                </div>
+
+                <div class="daily-affirmation">
+                    <h3>✨ Afirmación del Día</h3>
+                    <p id="daily-affirmation-text">Cargando...</p>
+                    <button class="btn-primary" onclick="app.generateAffirmation()">Nueva Afirmación</button>
+                </div>
+
+                <div class="quick-actions">
+                    <h3>Acciones Rápidas</h3>
+                    <div class="actions-grid">
+                        <button class="action-btn" onclick="app.navigateTo('mental-movie')">
+                            <span class="action-icon">🎬</span>
+                            <span>Crear Meta</span>
+                        </button>
+                        <button class="action-btn" onclick="app.navigateTo('diary')">
+                            <span class="action-icon">📔</span>
+                            <span>Escribir Diario</span>
+                        </button>
+                        <button class="action-btn" onclick="app.navigateTo('chatbot')">
+                            <span class="action-icon">🤖</span>
+                            <span>Hablar con Coach</span>
+                        </button>
+                        <button class="action-btn" onclick="app.exportData()">
+                            <span class="action-icon">💾</span>
+                            <span>Exportar Datos</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="mental-movie" class="section">
+            <h2 class="section-title">🎬 Tu Película Mental</h2>
+            <p class="section-subtitle">Crea escenas visuales de tu futuro ideal</p>
+
+            <div class="movie-creator">
+                <div class="form-group">
+                    <label>Título de tu Meta</label>
+                    <input type="text" id="goal-title" placeholder="Ej: Convertirme en desarrollador senior">
+                </div>
+
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select id="goal-category">
+                        <option value="carrera">💼 Carrera</option>
+                        <option value="salud">💪 Salud</option>
+                        <option value="relaciones">❤️ Relaciones</option>
+                        <option value="finanzas">💰 Finanzas</option>
+                        <option value="educacion">📚 Educación</option>
+                        <option value="personal">🌟 Desarrollo Personal</option>
+                        <option value="creatividad">🎨 Creatividad</option>
+                        <option value="espiritualidad">🧘 Espiritualidad</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción Detallada</label>
+                    <textarea id="goal-description" rows="4" placeholder="Describe tu meta con el mayor detalle posible..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Emoción que Sentirás al Lograrlo</label>
+                    <select id="goal-emotion">
+                        <option value="alegría">😊 Alegría</option>
+                        <option value="orgullo">🏆 Orgullo</option>
+                        <option value="paz">☮️ Paz</option>
+                        <option value="emoción">🎉 Emoción</option>
+                        <option value="gratitud">🙏 Gratitud</option>
+                        <option value="confianza">💪 Confianza</option>
+                        <option value="amor">❤️ Amor</option>
+                        <option value="libertad">🕊️ Libertad</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Fecha Límite</label>
+                    <input type="date" id="goal-deadline">
+                </div>
+
+                <div class="form-group">
+                    <label>URL de Imagen Inspiracional (opcional)</label>
+                    <input type="url" id="goal-image" placeholder="https://ejemplo.com/imagen.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label>Pasos de Acción (uno por línea)</label>
+                    <textarea id="goal-steps" rows="4" placeholder="1. Investigar cursos online&#10;2. Practicar 2 horas diarias&#10;3. Crear proyectos personales"></textarea>
+                </div>
+
+                <button class="btn-primary btn-large" onclick="app.createGoal()">
+                    <span class="btn-icon">✨</span>
+                    Crear Escena de tu Película
+                </button>
+            </div>
+
+            <div class="movie-storyboard">
+                <h3>Tu Storyboard de Vida</h3>
+                <div id="storyboard-container" class="storyboard-grid">
+                </div>
+            </div>
+        </section>
+
+        <section id="chatbot" class="section">
+            <h2 class="section-title">🤖 Coach Motivacional Galáctico</h2>
+            <p class="section-subtitle">Tu guía personal hacia el éxito</p>
+
+            <div class="chatbot-container">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="chat-message bot-message">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            <p>¡Hola! Soy tu coach motivacional. Estoy aquí para ayudarte a visualizar y alcanzar tu futuro ideal. ¿Cómo imaginas tu vida dentro de 5 años?</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" id="chat-input" placeholder="Escribe tu respuesta...">
+                    <button class="btn-send" onclick="app.sendMessage()">Enviar</button>
+                </div>
+            </div>
+
+            <div class="chat-insights">
+                <h3>Insights de tus Conversaciones</h3>
+                <div id="chat-insights-list"></div>
+            </div>
+        </section>
+
+        <section id="diary" class="section">
+            <h2 class="section-title">📔 Diario Digital Cósmico</h2>
+            <p class="section-subtitle">Registra tu viaje hacia las estrellas</p>
+
+            <div class="diary-controls">
+                <button class="btn-primary" onclick="app.showDiaryForm()">
+                    <span class="btn-icon">✍️</span>
+                    Nueva Entrada
+                </button>
+                <input type="text" id="diary-search" placeholder="🔍 Buscar en tu diario...">
+            </div>
+
+            <div id="diary-form" class="diary-form" style="display: none;">
+                <h3>Nueva Entrada de Diario</h3>
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" id="diary-title" placeholder="¿Qué pasó hoy?">
+                </div>
+                <div class="form-group">
+                    <label>¿Cómo te sientes?</label>
+                    <select id="diary-mood">
+                        <option value="excelente">😄 Excelente</option>
+                        <option value="bien">😊 Bien</option>
+                        <option value="neutral">😐 Neutral</option>
+                        <option value="triste">😢 Triste</option>
+                        <option value="ansioso">😰 Ansioso</option>
+                        <option value="motivado">💪 Motivado</option>
+                        <option value="agradecido">🙏 Agradecido</option>
+                        <option value="inspirado">✨ Inspirado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tu Entrada</label>
+                    <textarea id="diary-content" rows="6" placeholder="Escribe sobre tu día, tus pensamientos, tus logros..."></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button class="btn-primary" onclick="app.saveDiaryEntry()">Guardar Entrada</button>
+                    <button class="btn-secondary" onclick="app.cancelDiaryEntry()">Cancelar</button>
+                </div>
+            </div>
+
+            <div class="progress-timeline">
+                <h3>Tu Timeline de Progreso</h3>
+                <div id="timeline-container"></div>
+            </div>
+
+            <div class="diary-entries">
+                <h3>Entradas Recientes</h3>
+                <div id="diary-entries-list"></div>
+            </div>
+        </section>
+
+        <section id="vision-board" class="section">
+            <h2 class="section-title">🎨 Tablero de Visión Estelar</h2>
+            <p class="section-subtitle">Organiza visualmente tus sueños y aspiraciones</p>
+
+            <div class="vision-controls">
+                <button class="btn-primary" onclick="app.addVisionCard()">
+                    <span class="btn-icon">➕</span>
+                    Añadir Tarjeta
+                </button>
+                <button class="btn-secondary" onclick="app.clearVisionBoard()">Limpiar Tablero</button>
+            </div>
+
+            <div id="vision-board-container" class="vision-board-grid">
+            </div>
+        </section>
+
+        <section id="habits" class="section">
+            <h2 class="section-title">📊 Rastreador de Hábitos Galáctico</h2>
+            <p class="section-subtitle">Construye tu constelación de buenos hábitos</p>
+
+            <div class="habits-controls">
+                <button class="btn-primary" onclick="app.showHabitForm()">
+                    <span class="btn-icon">➕</span>
+                    Nuevo Hábito
+                </button>
+            </div>
+
+            <div id="habit-form" class="habit-form" style="display: none;">
+                <div class="form-group">
+                    <label>Nombre del Hábito</label>
+                    <input type="text" id="habit-name" placeholder="Ej: Meditar 10 minutos">
+                </div>
+                <div class="form-group">
+                    <label>Icono</label>
+                    <select id="habit-icon">
+                        <option value="🧘">🧘 Meditación</option>
+                        <option value="💪">💪 Ejercicio</option>
+                        <option value="📚">📚 Lectura</option>
+                        <option value="💧">💧 Agua</option>
+                        <option value="🥗">🥗 Alimentación</option>
+                        <option value="😴">😴 Dormir</option>
+                        <option value="✍️">✍️ Escritura</option>
+                        <option value="🎨">🎨 Creatividad</option>
+                        <option value="💻">💻 Programar</option>
+                        <option value="🎵">🎵 Música</option>
+                    </select>
+                </div>
+                <div class="form-buttons">
+                    <button class="btn-primary" onclick="app.createHabit()">Crear Hábito</button>
+                    <button class="btn-secondary" onclick="app.cancelHabitForm()">Cancelar</button>
+                </div>
+            </div>
+
+            <div id="habits-list" class="habits-grid"></div>
+        </section>
+
+        <section id="wheel" class="section">
+            <h2 class="section-title">🎯 Rueda de la Vida Cósmica</h2>
+            <p class="section-subtitle">Evalúa el balance de tu universo personal</p>
+
+            <div class="wheel-container">
+                <canvas id="life-wheel-canvas" width="500" height="500"></canvas>
+            </div>
+
+            <div class="wheel-controls">
+                <h3>Evalúa cada área (0-10)</h3>
+                <div class="wheel-sliders">
+                    <div class="slider-group">
+                        <label>💼 Carrera/Trabajo: <span id="val-career">5</span></label>
+                        <input type="range" min="0" max="10" value="5" class="wheel-slider" data-category="career">
+                    </div>
+                    <div class="slider-group">
+                        <label>💰 Finanzas: <span id="val-finance">5</span></label>
+                        <input type="range" min="0" max="10" value="5" class="wheel-slider" data-category="finance">
+                    </div>
+                    <div class="slider-group">
+                        <label>💪 Salud Física: <span id="val-health">5</span></label>
+                        <input type="range" min="0" max="10" value="5" class="wheel-slider" data-category="health">
+                    </div>
+                    <div class="slider-group">
+                        <label>❤️ Relaciones: <span id="val-relationships">5</span></label>
+                        <input type="range" min="0" max="10" value="5" class="wheel-slider" data-category="relationships">
+                    </div>
+                    <div class="slider-group">
+                        <label>🌟 Desarrollo Personal: <span id="val-personal">5</span></label>
+                        <input type="range" min="0" max="10" value="5" class="wheel-slider" data-category="personal">
+                    </div>
+                    <div class="slider-group">
+                        <label>🎨 Creatividad/Diversión: <span id="val-fun">5</span></label>
+                        <input type="range" min="0" max="10" value="5" class="wheel-slider" data-category="fun">
+                    </div>
+                    <div class="slider-group">
+                        <label>🧘 Espiritualidad: <span id="val-spiritual">5</span></label>
+                        <input type="range" min="0" max="10" value="5" class="wheel-slider" data-category="spiritual">
+                    </div>
+                    <div class="slider-group">
+                        <label>🌍 Contribución Social: <span id="val-contribution">5</span></label>
+                        <input type="range" min="0" max="10" value="5" class="wheel-slider" data-category="contribution">
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="app.saveWheelData()">Guardar Evaluación</button>
+            </div>
+        </section>
+
+        <section id="meditation" class="section">
+            <h2 class="section-title">🧘 Meditación Cósmica</h2>
+            <p class="section-subtitle">Encuentra paz en el silencio del universo</p>
+
+            <div class="meditation-container">
+                <div class="meditation-timer">
+                    <div class="timer-display" id="meditation-timer">05:00</div>
+                    <div class="timer-controls">
+                        <button class="btn-time" onclick="app.setMeditationTime(3)">3 min</button>
+                        <button class="btn-time active" onclick="app.setMeditationTime(5)">5 min</button>
+                        <button class="btn-time" onclick="app.setMeditationTime(10)">10 min</button>
+                        <button class="btn-time" onclick="app.setMeditationTime(15)">15 min</button>
+                        <button class="btn-time" onclick="app.setMeditationTime(20)">20 min</button>
+                    </div>
+                    <button class="btn-primary btn-large" id="meditation-btn" onclick="app.toggleMeditation()">
+                        Comenzar Meditación
+                    </button>
+                </div>
+
+                <div class="meditation-guide">
+                    <h3>Guía de Respiración</h3>
+                    <div class="breathing-circle" id="breathing-circle">
+                        <div class="breath-text" id="breath-text">Respira</div>
+                    </div>
+                </div>
+
+                <div class="ambient-controls">
+                    <h3>Sonido Ambiente</h3>
+                    <div class="ambient-options">
+                        <button class="ambient-btn" onclick="app.setAmbientSound('none')">🔇 Silencio</button>
+                        <button class="ambient-btn active" onclick="app.setAmbientSound('space')">🌌 Espacio</button>
+                        <button class="ambient-btn" onclick="app.setAmbientSound('rain')">🌧️ Lluvia</button>
+                        <button class="ambient-btn" onclick="app.setAmbientSound('ocean')">🌊 Océano</button>
+                    </div>
+                    <div class="volume-control">
+                        <label>Volumen: <span id="volume-value">50</span>%</label>
+                        <input type="range" min="0" max="100" value="50" id="volume-slider">
+                    </div>
+                </div>
+
+                <div class="meditation-stats">
+                    <h3>Tus Estadísticas de Meditación</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-sessions">0</div>
+                            <div class="stat-label">Sesiones Totales</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-minutes">0</div>
+                            <div class="stat-label">Minutos Meditados</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="achievements" class="section">
+            <h2 class="section-title">🏆 Logros Galácticos</h2>
+            <p class="section-subtitle">Colecciona estrellas mientras conquistas tus metas</p>
+
+            <div class="achievements-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="achievements-progress" style="width: 0%"></div>
+                </div>
+                <p class="progress-text"><span id="unlocked-count">0</span> de <span id="total-achievements">12</span> logros desbloqueados</p>
+            </div>
+
+            <div id="achievements-grid" class="achievements-grid"></div>
+        </section>
+    </main>
+
+    <div id="notification-container"></div>
+
+    <div id="custom-modal" class="custom-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="app.closeModal()">&times;</button>
+            <h3 id="modal-title"></h3>
+            <div id="modal-body"></div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="modal-cancel" onclick="app.closeModal()">Cancelar</button>
+                <button class="btn-primary" id="modal-confirm">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
